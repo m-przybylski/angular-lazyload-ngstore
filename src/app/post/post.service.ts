@@ -3,11 +3,8 @@ import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
-export interface Post {
-    id:     number,
-    title:  string,
-    author: string
-}
+
+import { Post } from './post.model'
 
 const url: string = "http://localhost:3000/posts"
 
@@ -20,11 +17,14 @@ export class PostService {
     }
 
     get(id:number): Observable<Post>{
-        return this.http.get(`${url}/1`).map(res => res.json())
+        return this.http.get(`${url}/${id}`).map(res => res.json())
     }
 
     addNew(post:Post){
-        return this.http.post(url, post)
-            .subscribe(res => console.log(res));
+        return this.http.post(url, post).map(res => res.json())
+    }
+
+    delete(id:number){
+        return this.http.delete(`${url}/${id}`).map(res => res.json())
     }
 }

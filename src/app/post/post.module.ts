@@ -8,9 +8,10 @@ import { StoreModule } from "@ngrx/store";
 
 import * as post from './reducers/post'
 import { PostRoutingModule } from "./post.routing.module";
+import { PostItemComponent } from './post-item/post-item.component';
 
 @NgModule({
-  declarations: [ PostComponent ],
+  declarations: [ PostComponent, PostItemComponent ],
   imports: [ 
     CommonModule,
     PostRoutingModule,

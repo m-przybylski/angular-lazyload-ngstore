@@ -6,14 +6,14 @@
       "author": "typicode"
     },
     {
-      "id": 2,
       "title": "nowy",
-      "author": "nowy"
+      "author": "nowy",
+      "id": 6
     },
     {
-      "id": 3,
-      "title": "nowy_1",
-      "author": "nowy_2"
+      "title": "nowy",
+      "author": "nowy",
+      "id": 7
     }
   ],
   "comments": [

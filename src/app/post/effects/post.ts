@@ -1,3 +1,4 @@
+import { Post } from 'app/post/post.model';
 import { Injectable } from '@angular/core';
 import { Effect, Actions, toPayload } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
@@ -7,8 +8,9 @@ import { of } from 'rxjs/observable/of';
 
 import { PostService } from "./../post.service";
 
-import * as post from './../actions/post'
+import * as postAction from './../actions/post'
 
+import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/switchMap';
@@ -19,13 +21,34 @@ export class PostEffects {
     constructor(private actions$: Actions, private postService: PostService) { }
 
     @Effect()
-    search$: Observable<Action> = this.actions$
-        .ofType(post.LOAD)
+    load$: Observable<Action> = this.actions$
+        .ofType(postAction.LOAD)
         .map(toPayload)
-        .switchMap(val => {
+        .switchMap(() => {
             return this.postService.getAll()
-                .map(posts => new post.LoadSuccessAction(posts))
-                .catch((error) => of(new post.LoadFailedAction(error)))
+                .map(posts => new postAction.LoadSuccessAction(posts))
+                .catch((error) => of(new postAction.LoadFailedAction(error)))
+        })
+
+    @Effect()
+    delete$: Observable<Action> = this.actions$
+        .ofType(postAction.DELETE)
+        .map(toPayload)
+        .switchMap((post:Post) => {
+            return this.postService.delete(post.id)
+                .map(post => new postAction.DeleteSuccessAction(post.id))
+                .catch((error) => of(new postAction.DeleteFailAction([post])))
+        })
+    @Effect()
+    add$: Observable<Action> = this.actions$
+        .ofType(postAction.ADD)
+        .map(toPayload)
+        .do(val => console.log(val))
+        .switchMap((post:Post) => {
+            return this.postService.addNew(post)
+                .map(result => new postAction.AddSuccessAction([result]))
+                .do(val => console.log(val))
+                .catch(error => of(new postAction.AddFailAction(post)))
         })
 
 }
