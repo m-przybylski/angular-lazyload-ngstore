@@ -12,16 +12,13 @@ import * as postAction from './actions/post'
   template: `
     <post-item *ngFor="let post of posts | async" [post]="post"></post-item>
     <button (click)="addNewPost()">Add new</button>
+    <router-outlet></router-outlet>
   `
 })
-export class PostComponent implements OnInit {
+export class PostComponent {
     posts: Observable<Post[]>;
     constructor(private postService: PostService, private store: Store<postStore.State>) {
         this.posts = this.store.select(postStore.getPosts);
-    }
-
-    ngOnInit() {
-        this.store.dispatch(new postAction.LoadAction());
     }
 
     addNewPost() {

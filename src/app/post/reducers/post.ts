@@ -9,6 +9,7 @@ import { createSelector } from 'reselect'
 export interface State {
     ids: number[];
     entities: { [id:number]: Post };
+    selectedId?: number,
     loading: boolean;
     loaded: boolean;
 }
@@ -16,17 +17,19 @@ export interface State {
 export const initialState: State = {
     ids: [],
     entities: {},
+    selectedId: -1,
     loading: false,
     loaded: false
 }
 
-export const reduce: ActionReducer<State> = (state = initialState, action: post.Actions) => {
+export function reduce(state = initialState, action: post.Actions): State {
     console.log(action.type);
     switch(action.type){
         case post.LOAD: {
             return { 
                 ids: state.ids,
                 entities: _.assign({}, state.entities),
+                selectedId: state.selectedId,
                 loading: true,
                 loaded: false
              }
@@ -44,6 +47,7 @@ export const reduce: ActionReducer<State> = (state = initialState, action: post.
             return { 
                 ids: [...state.ids, ...newPostsIds],
                 entities: _.assign({}, state.entities, newPostEntities),
+                selectedId: state.selectedId,
                 loading: false,
                 loaded: true
              }
@@ -66,6 +70,7 @@ export const reduce: ActionReducer<State> = (state = initialState, action: post.
             return {
                 ids: [...ids],
                 entities: _.assign({}, filteredPosts),
+                selectedId: state.selectedId,
                 loading: true,
                 loaded: true
             }
@@ -76,10 +81,26 @@ export const reduce: ActionReducer<State> = (state = initialState, action: post.
             return {
                 ids: state.ids,
                 entities: state.entities,
+                selectedId: state.selectedId,
                 loading: false,
                 loaded: true                
             }
-        }        
+        }
+
+        case post.SELECT_POST: {
+            let selectedPost: number = action.payload;
+            return {
+                ids: state.ids,
+                entities: state.entities,
+                selectedId: selectedPost,
+                loading: false,
+                loaded: true                
+            }
+        }
+
+        default: {
+            return state;
+        }
     }
 }
 
@@ -87,7 +108,12 @@ export const getIds         = (state: State) => state.ids;
 export const getEntities    = (state: State) => state.entities;
 export const getLoading     = (state: State) => state.loading;
 export const getLoaded      = (state: State) => state.loaded;
+export const getSelectedId  = (state: State) => state.selectedId;
 
 export const getPosts       = createSelector(getEntities, getIds, (entities, ids) => {
     return _.map(ids, (id:number) => { return entities[id] }) 
+});
+
+export const getSelectedPost = createSelector(getEntities, getSelectedId, (entities, selectedId) => {
+    return entities[selectedId];
 });

@@ -13,6 +13,8 @@ export const ADD            = "[Post] Add"
 export const ADD_SUCCESS    = "[Post] Add Success"
 export const ADD_FAIL       = "[Post] Add Fail"
 
+export const SELECT_POST    = "[Post] Select"
+
 export class LoadAction implements Action {
     readonly type = LOAD;
 
@@ -67,6 +69,11 @@ export class AddFailAction implements Action {
     constructor(public payload: Post) {}
 }
 
+export class SelectPostAction implements Action {
+    readonly type = SELECT_POST;
+
+    constructor(public payload: number) {}
+}
 
 export type Actions 
     = LoadAction 
@@ -78,3 +85,4 @@ export type Actions
     | AddAction
     | AddSuccessAction
     | AddFailAction
+    | SelectPostAction

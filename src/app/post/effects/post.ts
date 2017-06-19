@@ -13,16 +13,22 @@ import * as postAction from './../actions/post'
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/switchMap';
 
 @Injectable()
 export class PostEffects {
 
     constructor(private actions$: Actions, private postService: PostService) { }
+    // @Effect()
+    // loadSucccess$: Observable<Action> = this.actions$
+    //     .ofType(postAction.LOAD_SUCCESS)
+    //     .startWith(new postAction.LoadAction())
 
     @Effect()
     load$: Observable<Action> = this.actions$
         .ofType(postAction.LOAD)
+        .startWith(new postAction.LoadAction())
         .map(toPayload)
         .switchMap(() => {
             return this.postService.getAll()
@@ -43,7 +49,6 @@ export class PostEffects {
     add$: Observable<Action> = this.actions$
         .ofType(postAction.ADD)
         .map(toPayload)
-        .do(val => console.log(val))
         .switchMap((post:Post) => {
             return this.postService.addNew(post)
                 .map(result => new postAction.AddSuccessAction([result]))
