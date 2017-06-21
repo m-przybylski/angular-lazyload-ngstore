@@ -9,7 +9,7 @@ import { createSelector } from 'reselect'
 export interface State {
     ids: number[];
     entities: { [id:number]: Post };
-    selectedId?: number,
+    selectedId?: number;
     loading: boolean;
     loaded: boolean;
 }

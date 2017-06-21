@@ -20,10 +20,6 @@ import 'rxjs/add/operator/switchMap';
 export class PostEffects {
 
     constructor(private actions$: Actions, private postService: PostService) { }
-    // @Effect()
-    // loadSucccess$: Observable<Action> = this.actions$
-    //     .ofType(postAction.LOAD_SUCCESS)
-    //     .startWith(new postAction.LoadAction())
 
     @Effect()
     load$: Observable<Action> = this.actions$

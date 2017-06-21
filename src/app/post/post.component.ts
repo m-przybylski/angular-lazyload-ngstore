@@ -17,8 +17,9 @@ import * as postAction from './actions/post'
 })
 export class PostComponent {
     posts: Observable<Post[]>;
-    constructor(private postService: PostService, private store: Store<postStore.State>) {
+    constructor(private store: Store<postStore.State>) {
         this.posts = this.store.select(postStore.getPosts);
+        //this.posts = this.store.select('entites')
     }
 
     addNewPost() {

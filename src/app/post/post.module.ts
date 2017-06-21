@@ -1,6 +1,5 @@
 import { PostEffects } from 'app/post/effects/post';
 import { EffectsModule } from '@ngrx/effects';
-import { HttpModule } from '@angular/http';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { StoreModule } from "@ngrx/store";
